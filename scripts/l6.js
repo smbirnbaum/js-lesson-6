@@ -1,69 +1,35 @@
-const word = document.getElementById("word");
-const text = document.getElementById("text");
-const scoreElement = document.getElementById("score");
-const timeElement = document.getElementById("time");
-const endGameContainer = document.getElementById("end-game-container");
+let books = [];
 
-const words = [
-  "cat",
-  "dog",
-  "pizza",
-  "banana",
-  "computer",
-  "javascript",
-  "school",
-  "flower",
-  "music",
-  "coffee"
-];
+const form = document.querySelector("#book-form");
+const titleInput = document.querySelector("#title");
+const authorInput = document.querySelector("#author");
+const bookList = document.querySelector("#book-list");
 
-let randomWord;
-let score = 0;
-let time = 10;
+function showBooks() {
+    bookList.innerHTML = "";
 
-function getRandomWord() {
-  return words[Math.floor(Math.random() * words.length)];
+    books.forEach(function(book) {
+        const li = document.createElement("li");
+        li.textContent = book.title + " by " + book.author;
+        bookList.appendChild(li);
+    });
 }
 
-function addWordToDOM() {
-  randomWord = getRandomWord();
-  word.innerText = randomWord;
-}
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
 
-function updateScore() {
-  score++;
-  scoreElement.innerText = score;
-}
+    const title = titleInput.value;
+    const author = authorInput.value;
 
-function updateTime() {
-  time--;
-  timeElement.innerText = time;
+    const book = {
+        title: title,
+        author: author
+    };
 
-  if (time === 0) {
-    clearInterval(timeInterval);
-    gameOver();
-  }
-}
+    books.push(book);
 
-function gameOver() {
-  endGameContainer.innerHTML = `
-    <h1>Time ran out</h1>
-    <p>Your final score is ${score}</p>
-    <button onclick="location.reload()">Play Again</button>
-  `;
+    showBooks();
 
-  endGameContainer.style.display = "flex";
-}
-
-text.addEventListener("input", function () {
-  if (text.value === randomWord) {
-    updateScore();
-    addWordToDOM();
-    time += 5;
-    text.value = "";
-  }
+    titleInput.value = "";
+    authorInput.value = "";
 });
-
-addWordToDOM();
-
-const timeInterval = setInterval(updateTime, 1000);
