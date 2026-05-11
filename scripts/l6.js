@@ -5,40 +5,14 @@ const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
 const bookList = document.querySelector("#book-list");
 
-function addBook(title, author) {
-    const book = {
-        title: title,
-        author: author,
-        isRead: false
-    };
-
-    books.push(book);
-}
-
-function listBooks() {
+function showBooks() {
     bookList.innerHTML = "";
 
     books.forEach(function(book) {
         const li = document.createElement("li");
-
-        if (book.isRead === true) {
-            li.textContent = book.title + " by " + book.author + " - Read";
-        } else {
-            li.textContent = book.title + " by " + book.author + " - Not read";
-        }
-
+        li.textContent = book.title + " by " + book.author;
         bookList.appendChild(li);
     });
-}
-
-function markAsRead(title) {
-    const book = books.find(function(book) {
-        return book.title === title;
-    });
-
-    if (book) {
-        book.isRead = true;
-    }
 }
 
 form.addEventListener("submit", function(event) {
@@ -47,8 +21,14 @@ form.addEventListener("submit", function(event) {
     const title = titleInput.value;
     const author = authorInput.value;
 
-    addBook(title, author);
-    listBooks();
+    const book = {
+        title: title,
+        author: author
+    };
+
+    books.push(book);
+
+    showBooks();
 
     titleInput.value = "";
     authorInput.value = "";
